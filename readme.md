@@ -5,6 +5,7 @@ This repository contains scripts and datasets for a systematic review of partici
 
 ## Workflow
 
+```mermaid
 graph TD
     %% 自定义节点颜色
     classDef script fill:#f9f2f4,stroke:#c7254e,stroke-width:2px,color:#c7254e;
@@ -43,7 +44,7 @@ graph TD
     %% 样式说明
     class A1,A2,C,E,G,I data;
     class B,D,H script;
-
+```
 
 ## Dataset
 - Original exports from PubMed and IEEE Xplore are placed under the project root (e.g., `export*.csv`, `pubmed-Electromyo-set.txt`).
