@@ -7,43 +7,29 @@ This repository contains scripts and datasets for a systematic review of partici
 
 ```mermaid
 graph TD
-    %% 自定义节点颜色
-    classDef script fill:#f9f2f4,stroke:#c7254e,stroke-width:2px,color:#c7254e;
-    classDef data fill:#dff0d8,stroke:#3c763d,stroke-width:2px,color:#3c763d;
-    classDef manual fill:#fcf8e3,stroke:#8a6d3b,stroke-width:2px,color:#8a6d3b;
-    classDef analysis fill:#d9edf7,stroke:#31708f,stroke-width:2px,color:#31708f;
-
-    %% 阶段 1: 数据收集与清理
-    subgraph Phase 1: 数据检索与合并 (Data Retrieval & Merging)
-        A1[PubMed 导出 CSV]:::data --> B(merge_csv.py):::script
-        A2[IEEE 分批导出 CSV]:::data --> B
-        B -->|列名对齐 / 标题去重 / 剔除无摘要项| C[(Final_Merged_Dataset.csv<br/>Total: 6242)]:::data
+    subgraph phase1 ["Phase 1: Data Retrieval & Merging"]
+        A1[PubMed CSV] --> B(merge_csv.py)
+        A2[IEEE CSV] --> B
+        B -->|Merge & Deduplicate| C[(Final_Merged_Dataset.csv)]
     end
 
-    %% 阶段 2: 抽样与全文准备
-    subgraph Phase 2: 随机抽样与全文本获取 (Sampling & PDF Fetching)
-        C --> D(random_sample.py):::script
-        D -->|random_state=42| E[(Sampled_200_Papers.csv)]:::data
-        E -.->|依据 DOI/Title| F[人工/插件辅助下载 PDF]:::manual
-        F --> G[PDF_Dataset 文件夹<br/>格式: ID.pdf]:::data
+    subgraph phase2 ["Phase 2: Sampling & PDF Fetching"]
+        C --> D(random_sample.py)
+        D -->|random_state=42| E[(Sampled_200_Papers.csv)]
+        E -.->|Manual/Plugin| F[Download PDFs]
+        F --> G[PDF_Dataset Folder]
     end
 
-    %% 阶段 3: 大语言模型自动化信息提取
-    subgraph Phase 3: 自动化全文信息提取 (LLM Automated Extraction)
-        E --> H(pdf_extractor.py):::script
-        G -->|PyMuPDF 文本解析| H
-        H -->|调用 Gemini/GPT API<br/>严格 JSON 格式输出| I[(Extracted_Demographics_Results.csv)]:::data
+    subgraph phase3 ["Phase 3: LLM Automated Extraction"]
+        E --> H(pdf_extractor.py)
+        G -->|PyMuPDF Text| H
+        H -->|LLM API Call| I[(Extracted_Demographics.csv)]
     end
 
-    %% 阶段 4: 结果分析
-    subgraph Phase 4: 结果分析与毕设撰写 (Analysis & Thesis)
-        I --> J[数据可视化分析<br/>样本量/肤色/种族分布]:::analysis
-        J --> K[撰写毕业论文:<br/>EMG研究中的人口统计学代表性偏差]:::analysis
+    subgraph phase4 ["Phase 4: Analysis & Thesis"]
+        I --> J[Data Visualization]
+        J --> K[Thesis Writing]
     end
-
-    %% 样式说明
-    class A1,A2,C,E,G,I data;
-    class B,D,H script;
 ```
 
 ## Dataset
