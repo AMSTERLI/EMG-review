@@ -12,7 +12,7 @@ print("Processing data, please wait...")
 # 1. Process PubMed data
 # ==========================================
 try:
-    df_pubmed = pd.read_csv("pubmed_with_abstracts.csv", on_bad_lines='skip')
+    df_pubmed = pd.read_csv("./original-csv/pubmed_with_abstracts.csv", on_bad_lines='skip')
 except FileNotFoundError:
     print("Warning: pubmed_with_abstracts.csv not found. Skipping PubMed.")
     df_pubmed = pd.DataFrame()
@@ -31,7 +31,7 @@ df_pubmed = df_pubmed[cols_to_keep]
 # ==========================================
 # 2. Process IEEE data
 # ==========================================
-ieee_files = glob.glob("export*.csv")
+ieee_files = glob.glob("original-csv/export*.csv")
 ieee_list = []
 
 for file in ieee_files:

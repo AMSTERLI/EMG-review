@@ -18,7 +18,8 @@ client = OpenAI(
 
 MODEL_NAME = "gemini-2.5-pro-cli"
 
-input_file = "Sampled_10_Papers.csv"  # input list of sampled papers
+# 注意：请确保 input_file 是你实际采样的文件 (例如 'Sampled_900_Papers_Stratified.csv')
+input_file = "Sampled_10_Papers.csv"  
 output_file = "Extracted_Demographics_Results.csv"
 pdf_folder = "PDF_Dataset"
 
@@ -37,9 +38,10 @@ def extract_text_from_pdf(pdf_path):
 
 
 def create_extraction_prompt(title, full_text):
+    # 升级后的 Prompt：加入了国家、性别详情、年龄详情的提取要求
     return f"""You are an expert academic data extractor assisting with a systematic review on demographics in Electromyography (EMG) studies.
 
-Your task is to read the full text and extract participant demographic information (Methods/Participants sections).
+Your task is to read the full text and extract participant demographic information (Methods/Participants sections), as well as the country where the research was carried out.
 
 Paper Title: {title}
 ---
@@ -49,16 +51,18 @@ Full Text:
 
 Return strict JSON with these keys:
 {{
-    "sample_size": "Total number of participants (integer) or null.",
+    "sample_size": "Total number of human participants (integer) or null.",
+    "country_of_research": "Country where the research/data collection was carried out based on author affiliations or explicit text, or 'Not reported'.",
     "reports_gender": "true or false",
+    "gender_details": "Brief gender breakdown (e.g., '10 Male, 5 Female') or 'Not reported'.",
     "reports_age": "true or false",
+    "age_details": "Brief age info (e.g., 'Mean 25.4, SD 2.1' or age range) or 'Not reported'.",
     "reports_race_or_ethnicity": "true or false",
-    "race_ethnicity_details": "Brief breakdown if reported or 'Not reported'.",
+    "race_ethnicity_details": "Brief breakdown of race/ethnicity if reported or 'Not reported'.",
     "reports_skin_color": "true or false",
     "skin_color_details": "Brief skin color/tone info if reported or 'Not reported'.",
     "extraction_notes": "Short note about location of demographic info or note if not human subjects."
 }}"""
-
 
 print("Loading dataset...")
 df = pd.read_csv(input_file)
@@ -70,7 +74,6 @@ if os.path.exists(output_file):
 else:
     df_done = pd.DataFrame()
     processed_ids = []
-
 
 results = []
 save_interval = 5  # save every 5 records
@@ -111,7 +114,7 @@ for index, row in tqdm(df.iterrows(), total=len(df)):
                 model=MODEL_NAME,
                 response_format={ "type": "json_object" },
                 messages=[
-                    {"role": "system", "content": "You are a helpful assistant designed to output JSON."},
+                    {"role": "system", "content": "You are a helpful assistant designed to output strict JSON."},
                     {"role": "user", "content": prompt}
                 ]
             )
@@ -121,14 +124,23 @@ for index, row in tqdm(df.iterrows(), total=len(df)):
 
             row_data = row.to_dict()
             row_data['LLM_Status'] = 'Success'
-            # merge extracted fields
+            
+            # === 解析新增和原有的 JSON 字段 ===
             row_data['Sample_Size'] = result_json.get('sample_size', '')
+            row_data['Country'] = result_json.get('country_of_research', '')
+            
             row_data['Reports_Gender'] = result_json.get('reports_gender', False)
+            row_data['Gender_Details'] = result_json.get('gender_details', '')
+            
             row_data['Reports_Age'] = result_json.get('reports_age', False)
+            row_data['Age_Details'] = result_json.get('age_details', '')
+            
             row_data['Reports_Race'] = result_json.get('reports_race_or_ethnicity', False)
             row_data['Race_Details'] = result_json.get('race_ethnicity_details', '')
+            
             row_data['Reports_Skin_Color'] = result_json.get('reports_skin_color', False)
             row_data['Skin_Color_Details'] = result_json.get('skin_color_details', '')
+            
             row_data['Extraction_Notes'] = result_json.get('extraction_notes', '')
 
             results.append(row_data)
