@@ -3,6 +3,48 @@
 
 This repository contains scripts and datasets for a systematic review of participant demographics reported in Electromyography (EMG) studies. The workflow covers collecting records from PubMed and IEEE Xplore, merging exports, sampling papers for full-text review, extracting demographic details with an LLM, and saving structured results for manual verification.
 
+## Workflow
+
+graph TD
+    %% 自定义节点颜色
+    classDef script fill:#f9f2f4,stroke:#c7254e,stroke-width:2px,color:#c7254e;
+    classDef data fill:#dff0d8,stroke:#3c763d,stroke-width:2px,color:#3c763d;
+    classDef manual fill:#fcf8e3,stroke:#8a6d3b,stroke-width:2px,color:#8a6d3b;
+    classDef analysis fill:#d9edf7,stroke:#31708f,stroke-width:2px,color:#31708f;
+
+    %% 阶段 1: 数据收集与清理
+    subgraph Phase 1: 数据检索与合并 (Data Retrieval & Merging)
+        A1[PubMed 导出 CSV]:::data --> B(merge_csv.py):::script
+        A2[IEEE 分批导出 CSV]:::data --> B
+        B -->|列名对齐 / 标题去重 / 剔除无摘要项| C[(Final_Merged_Dataset.csv<br/>Total: 6242)]:::data
+    end
+
+    %% 阶段 2: 抽样与全文准备
+    subgraph Phase 2: 随机抽样与全文本获取 (Sampling & PDF Fetching)
+        C --> D(random_sample.py):::script
+        D -->|random_state=42| E[(Sampled_200_Papers.csv)]:::data
+        E -.->|依据 DOI/Title| F[人工/插件辅助下载 PDF]:::manual
+        F --> G[PDF_Dataset 文件夹<br/>格式: ID.pdf]:::data
+    end
+
+    %% 阶段 3: 大语言模型自动化信息提取
+    subgraph Phase 3: 自动化全文信息提取 (LLM Automated Extraction)
+        E --> H(pdf_extractor.py):::script
+        G -->|PyMuPDF 文本解析| H
+        H -->|调用 Gemini/GPT API<br/>严格 JSON 格式输出| I[(Extracted_Demographics_Results.csv)]:::data
+    end
+
+    %% 阶段 4: 结果分析
+    subgraph Phase 4: 结果分析与毕设撰写 (Analysis & Thesis)
+        I --> J[数据可视化分析<br/>样本量/肤色/种族分布]:::analysis
+        J --> K[撰写毕业论文:<br/>EMG研究中的人口统计学代表性偏差]:::analysis
+    end
+
+    %% 样式说明
+    class A1,A2,C,E,G,I data;
+    class B,D,H script;
+
+
 ## Dataset
 - Original exports from PubMed and IEEE Xplore are placed under the project root (e.g., `export*.csv`, `pubmed-Electromyo-set.txt`).
 - `Final_Merged_Dataset.csv`: cleaned merge of PubMed and IEEE records (titles + abstracts).
