@@ -1,0 +1,4 @@
+# 忽略 PDF_Dataset 目录下的所有 PDF 文件
+PDF_Dataset/*.pdf
+PDF_Dataset/**/*.pdf
+
