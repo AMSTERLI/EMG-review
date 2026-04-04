@@ -1,0 +1,4 @@
+﻿metric,reported_count,total_count,reporting_rate
+gender_reporting_rate,330,377,87.53
+age_reporting_rate,339,377,89.92
+race_or_skin_reporting_rate,10,377,2.65

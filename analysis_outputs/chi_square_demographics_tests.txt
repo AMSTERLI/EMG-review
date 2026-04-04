@@ -1,0 +1,129 @@
+======================================================================
+人口学报告 - 卡方检验与 Cochran-Armitage 趋势检验
+======================================================================
+数据文件: PDF_Dataset\Sampled_Papers_Stratified.csv
+总记录数: 377
+
+----------------------------------------------------------------------
+一、两个数据库（PubMed vs IEEE）x 是否报告 - Pearson Chi-square 独立性检验
+----------------------------------------------------------------------
+
+【性别报告】数据库 x 是否报告（全样本 377 篇，仅 PubMed / IEEE）
+观测频数（行=数据库，列=[未报告, 已报告]）:
+_rep_Gender_Details  False  True 
+_db                              
+IEEE                    28     80
+PubMed                  19    250
+Pearson Chi-square = 25.125495, df = 1, p = 5.37179e-07
+期望频数最小值 = 13.4642
+【年龄报告】数据库 x 是否报告（全样本 377 篇，仅 PubMed / IEEE）
+观测频数（行=数据库，列=[未报告, 已报告]）:
+_rep_Age_Details  False  True 
+_db                           
+IEEE                 28     80
+PubMed               10    259
+Pearson Chi-square = 41.934429, df = 1, p = 9.4386e-11
+期望频数最小值 = 10.8859
+【人种或肤色报告】数据库 x 是否报告（全样本 377 篇，仅 PubMed / IEEE）
+观测频数（行=数据库，列=[未报告, 已报告]）:
+_rep_Race_Ethnicity_Details  False  True 
+_db                                      
+IEEE                           106      2
+PubMed                         261      8
+Pearson Chi-square = 0.375781, df = 1, p = 0.53987
+期望频数最小值 = 2.8647
+----------------------------------------------------------------------
+二、有序样本量区间 x 是否报告 - Cochran-Armitage 趋势检验
+----------------------------------------------------------------------
+
+【性别报告】样本量区间（有序）x 是否报告 - Cochran-Armitage 趋势检验
+纳入篇数（样本量可分区间的记录）: 377
+
+      样本量区间   n  已报告  未报告
+      小于等于5  39   24   15
+  大于5小于等于15 146  130   16
+ 大于15小于等于30  99   89   10
+ 大于30小于等于60  68   62    6
+大于60小于等于100  14   14    0
+      大于100  11   11    0
+
+线性得分: [0, 1, 2, 3, 4, 5]（对应上表自上而下）
+Z = 3.812813, 双侧 p = 0.000137394
+【年龄报告】样本量区间（有序）x 是否报告 - Cochran-Armitage 趋势检验
+纳入篇数（样本量可分区间的记录）: 377
+
+      样本量区间   n  已报告  未报告
+      小于等于5  39   21   18
+  大于5小于等于15 146  135   11
+ 大于15小于等于30  99   94    5
+ 大于30小于等于60  68   64    4
+大于60小于等于100  14   14    0
+      大于100  11   11    0
+
+线性得分: [0, 1, 2, 3, 4, 5]（对应上表自上而下）
+Z = 4.966436, 双侧 p = 6.81947e-07
+【人种或肤色报告】样本量区间（有序）x 是否报告 - Cochran-Armitage 趋势检验
+纳入篇数（样本量可分区间的记录）: 377
+
+      样本量区间   n  已报告  未报告
+      小于等于5  39    0   39
+  大于5小于等于15 146    2  144
+ 大于15小于等于30  99    3   96
+ 大于30小于等于60  68    4   64
+大于60小于等于100  14    0   14
+      大于100  11    1   10
+
+线性得分: [0, 1, 2, 3, 4, 5]（对应上表自上而下）
+Z = 2.093396, 双侧 p = 0.0363138
+----------------------------------------------------------------------
+三、多个 Domain（主题）x 是否报告 - Pearson Chi-square 独立性检验（r x 2）
+----------------------------------------------------------------------
+
+【性别报告】Domain（主题类别，多标签展开）x 是否报告
+展开后行数（论文-类别对）: 1071，Domain 类数: 7
+观测频数（行=Domain，列=[未报告, 已报告]）:
+_rep_Gender_Details        False  True 
+_domain                                
+Biomechanics & Kinematics     28    194
+Clinical & Diagnostic         16    165
+HCI & Prosthetics             24    164
+Neurophysiology               19    119
+Other / General                0      9
+Rehabilitation & Therapy      15    170
+Sports & Ergonomics           15    133
+Pearson Chi-square = 5.966959, df = 6, p = 0.426902
+期望频数最小值 = 0.9832
+【年龄报告】Domain（主题类别，多标签展开）x 是否报告
+展开后行数（论文-类别对）: 1071，Domain 类数: 7
+观测频数（行=Domain，列=[未报告, 已报告]）:
+_rep_Age_Details           False  True 
+_domain                                
+Biomechanics & Kinematics     21    201
+Clinical & Diagnostic          9    172
+HCI & Prosthetics             22    166
+Neurophysiology               16    122
+Other / General                0      9
+Rehabilitation & Therapy      11    174
+Sports & Ergonomics           18    130
+Pearson Chi-square = 11.188217, df = 6, p = 0.0827307
+期望频数最小值 = 0.8151
+【人种或肤色报告】Domain（主题类别，多标签展开）x 是否报告
+展开后行数（论文-类别对）: 1071，Domain 类数: 7
+观测频数（行=Domain，列=[未报告, 已报告]）:
+_rep_Race_Ethnicity_Details  False  True 
+_domain                                  
+Biomechanics & Kinematics      216      6
+Clinical & Diagnostic          176      5
+HCI & Prosthetics              187      1
+Neurophysiology                137      1
+Other / General                  9      0
+Rehabilitation & Therapy       181      4
+Sports & Ergonomics            145      3
+Pearson Chi-square = 4.729160, df = 6, p = 0.57899
+期望频数最小值 = 0.1681
+【方法说明】
+- 检验 1、3 使用 scipy.stats.chi2_contingency（无连续性校正）。
+- 检验 2 使用 Cochran-Armitage 线性趋势检验，得分与 relationship.py 中样本量区间顺序一致。
+- 期望频数过小时，渐近 p 值可能偏差；可考虑 Fisher 精确检验或合并类别。
+- 检验 3 对多标签论文按类别展开，行间不独立，解释需谨慎。
+======================================================================
