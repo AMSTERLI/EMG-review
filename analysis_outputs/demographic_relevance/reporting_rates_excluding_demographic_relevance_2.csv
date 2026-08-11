@@ -1,0 +1,4 @@
+﻿metric,original_reported_count,original_total_count,original_reporting_rate,excluded_class_2_count,sensitivity_reported_count,sensitivity_total_count,sensitivity_reporting_rate,absolute_rate_change
+gender_reporting_rate,330,377,87.53,14,316,363,87.05,-0.48
+age_reporting_rate,339,377,89.92,14,325,363,89.53,-0.39
+race_or_skin_reporting_rate,10,377,2.65,14,8,363,2.2,-0.45
